@@ -33,10 +33,10 @@ total_revenue = sum(float(p.split(':')[1]) for purchase in info['purchase_histor
 avg_purchase_per_customer = total_revenue / customers_num
 
 # Identify Customers who Spent Above $100
-highest_spending_customers = info[info['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) for p in str(x).split(';')) if len(p.split(':')) == 2 else 0) > 100]['customer_id'].tolist()
+highest_spending_customers = info[info['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) if len(p.split(':')) == 2 else 0 for p in str(x).split(';'))) > 100]['customer_id'].tolist()
 
 # Find Customers who Purchased a Specific Item
-specific_items_customer = info[info['purchase_history'].str.contains('Product X')]['customer_id'].tolist()
+specific_items_customer = info[info['purchase_history'].fillna('').str.contains('Product X')]['customer_id'].tolist()
 
 # Group Customers by Location & Calculate Total Spending per Location
 total_spending_per_location = info.groupby('location')['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) for p in str(x).split(';') if len(p.split(':')) == 2))
@@ -44,8 +44,11 @@ total_spending_per_location = info.groupby('location')['purchase_history'].apply
 #Top 5 Purchased Items and their Quantities
 import matplotlib.pyplot as plt
 
-top_purchased_items.plot(kind='bar', xlabel='Item', ylabel='Quantity', title='Top 5 Purchased Items')
-plt.show()
+if not top_purchased_items.empty:
+    top_purchased_items.plot(kind='bar', xlabel='Item', ylabel='Quantity', title='Top 5 Purchased Items')
+    plt.show()
+else:
+    print("No data available to plot.")
 
 # Print Results
 print("Number of Customers:", customers_num)
