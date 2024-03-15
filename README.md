@@ -9,10 +9,7 @@ This repository contains a Python script for analyzing customer data stored in a
 - Python 3.x
 - pandas library
 
-Install the required library using pip:
-
-```bash
-pip install pandas
+Install the required library using pip
 
 ## CSV File Format
 
@@ -25,10 +22,6 @@ The CSV file should have the following columns:
 - `purchase_history`: Semi-colon separated list of items purchased with their respective prices (item name and price).
 
 Ensure that the CSV file follows this format for the script to work correctly.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
