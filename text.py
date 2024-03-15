@@ -17,6 +17,8 @@ num_customers_age_range = len(info[(info['age'] >= 25) & (info['age'] <= 35)])
 # Parse purchase history to get items and their quantities
 items = []
 for purchase in info['purchase_history']:
+     # Convert purchase to string if it is not already a string
+    purchase = str(purchase)
     item_purchases = purchase.split(';')
     for item in item_purchases:
         items.append(item.split(':')[0])
@@ -31,10 +33,10 @@ total_revenue = sum([float(p.split(':')[1]) for purchase in info['purchase_histo
 avg_purchase_per_customer = total_revenue / customers_num
 
 # Identify Customers who Spent Above $100
-high_spending_customers = info[info['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) for p in x.split(';'))) > 100]['customer_id'].tolist()
+highest_spending_customers = info[info['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) for p in x.split(';'))) > 100]['customer_id'].tolist()
 
 # Find Customers who Purchased a Specific Item
-customers_of_specific_item = info[info['purchase_history'].str.contains('Product X')]['customer_id'].tolist()
+specific_items_customer = info[info['purchase_history'].str.contains('Product X')]['customer_id'].tolist()
 
 # Group Customers by Location & Calculate Total Spending per Location
 total_spending_per_location = info.groupby('location')['purchase_history'].apply(lambda x: sum(float(p.split(':')[1]) for purchase in x.split(';')))
@@ -45,6 +47,18 @@ import matplotlib.pyplot as plt
 top_purchased_items.plot(kind='bar', xlabel='Item', ylabel='Quantity', title='Top 5 Purchased Items')
 plt.show()
 
+# Print Results
+print("Number of Customers:", customers_num)
+print("Average Customer Age:", avg_age)
+print("Number of Customers in a Specific Age Range (25-35 years old):", num_customers_age_range)
+print("Top 3 Most Purchased Items:")
+print(top_purchased_items)
+print("Total Revenue Generated:", total_revenue)
+print("Average Purchase Amount Per Customer:", avg_purchase_per_customer)
+print("Identify Customers who Spent Above $100:", highest_spending_customers)
+print("Find Customers who Purchased Product X:", specific_items_customer)
+print("Total Spending per Location:")
+print(total_spending_per_location)
 
 
 
