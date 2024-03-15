@@ -17,17 +17,18 @@ num_customers_age_range = len(info[(info['age'] >= 25) & (info['age'] <= 35)])
 # Parse purchase history to get items and their quantities
 items = []
 for purchase in info['purchase_history']:
-    purchase = str(purchase)  # Converting purchase to a string
-    for item in purchase.split(';'):
-        parts = item.split(':')
-        if len(parts) == 2:  # Ensure that both item and amount is available 
-            items.append(parts[0])
+    purchase = str(purchase).replace('"', '')
+    parts = purchase.split(';')
+    for part in parts:
+        item_and_price = part.split(',')
+        if len(item_and_price) == 2:  # Check if both item and price are present
+            items.append(item_and_price[0].strip())
 
 # Most Purchased top 3 Items
 top_purchased_items = pd.Series(items).value_counts().nlargest(3)
 
 # Generated total revenue
-total_revenue = sum(float(p.split(':')[1]) for purchase in info['purchase_history'] for p in str(purchase).split(';') if len(p.split(':')) == 2)
+total_revenue = sum(float(p.split(',')[1]) for purchase in info['purchase_history'].fillna('').str.split(';') for p in purchase if len(p.split(',')) == 2)
 
 # Average Purchase Per Customer
 avg_purchase_per_customer = total_revenue / customers_num
