@@ -17,6 +17,7 @@ num_customers_age_range = len(info[(info['age'] >= 25) & (info['age'] <= 35)])
 # Parse purchase history to get items and their quantities
 items = []
 for purchase in info['purchase_history']:
+    purchase = str(purchase)  # Converting purchase to a string
     for item in purchase.split(';'):
         parts = item.split(':')
         if len(parts) == 2:  # Ensure that both item and amount is available 
