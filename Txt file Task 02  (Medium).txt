@@ -1,0 +1,11 @@
+Task 02
+Explanation:
+* Each row represents a customer.
+* Columns include:
+* customer_id: Unique identifier for each customer.
+* name: Customer's full name.
+* age: Customer's age.
+* location: Customer's city or region.
+* purchase_history: Semi-colon separated list of items purchased with their respective prices (quantity not specified).
+
+
